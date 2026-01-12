@@ -58,7 +58,7 @@ function App() {
 
   return (
     <div style={{ maxWidth: 600, margin: "auto", padding: 30, fontFamily: "Arial" }}>
-      <h1 style={{ textAlign: "center" }}>Gestor de Tareas</h1>
+      <h1 style={{ textAlign: "center" }}>Gestor de Tareas Actualizado</h1>
       <form onSubmit={agregarTarea} style={{ marginBottom: 30, background: "#f7f7f7", padding: 20, borderRadius: 8 }}>
         <h2>Nueva tarea</h2>
         <input
