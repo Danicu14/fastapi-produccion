@@ -1,3 +1,9 @@
+# Ruta raíz personalizada
+@app.get("/")
+def root():
+    return {
+        "mensaje": "Bienvenido a la API de Tareas. Visita /docs para la documentación o usa /api/tareas para la lista de tareas."
+    }
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
