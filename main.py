@@ -1,3 +1,4 @@
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -13,27 +14,39 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class Bicicleta(BaseModel):
+class Tarea(BaseModel):
     id: int
-    nombre: str
-    disponible: bool
+    titulo: str
+    descripcion: str
+    completada: bool = False
 
-bicicletas = [
-    Bicicleta(id=1, nombre="Bicicleta Urbana", disponible=True),
-    Bicicleta(id=2, nombre="Bicicleta Montaña", disponible=True),
-    Bicicleta(id=3, nombre="Bicicleta Eléctrica", disponible=True),
-]
+tareas = []
+contador_id = 1
 
-@app.get("/api/bicicletas")
-def listar_bicicletas():
-    return bicicletas
+@app.get("/api/tareas")
+def listar_tareas():
+    return tareas
 
-@app.post("/api/reservar/{id}")
-def reservar_bicicleta(id: int):
-    for bici in bicicletas:
-        if bici.id == id:
-            if not bici.disponible:
-                raise HTTPException(status_code=400, detail="La bicicleta ya está reservada.")
-            bici.disponible = False
-            return {"mensaje": f"Has reservado la {bici.nombre}"}
-    raise HTTPException(status_code=404, detail="Bicicleta no encontrada.")
+@app.post("/api/tareas")
+def agregar_tarea(tarea: Tarea):
+    global contador_id
+    tarea.id = contador_id
+    contador_id += 1
+    tareas.append(tarea)
+    return tarea
+
+@app.delete("/api/tareas/{id}")
+def eliminar_tarea(id: int):
+    for tarea in tareas:
+        if tarea.id == id:
+            tareas.remove(tarea)
+            return {"mensaje": "Tarea eliminada"}
+    raise HTTPException(status_code=404, detail="Tarea no encontrada")
+
+@app.put("/api/tareas/{id}/completar")
+def completar_tarea(id: int):
+    for tarea in tareas:
+        if tarea.id == id:
+            tarea.completada = True
+            return tarea
+    raise HTTPException(status_code=404, detail="Tarea no encontrada")
