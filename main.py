@@ -35,7 +35,7 @@ if os.path.exists(frontend_build_path):
 else:
     @app.get("/")
     def root():
-        return {"mensaje": "El frontend no está compilado. Ejecuta 'npm run build' en la carpeta frontend."}
+        return {"mensaje": "Despliegue automático activo: este mensaje prueba el CI/CD en Render."}
 
 class Tarea(BaseModel):
     id: int
